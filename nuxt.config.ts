@@ -47,7 +47,7 @@ export default defineNuxtConfig({
     build: {
       markdown: {
         highlight: {
-          langs: ['php', 'bash', 'json', 'xml', 'diff']
+          langs: ['php', 'bash', 'json', 'xml', 'diff', 'blade', 'yaml']
         },
         toc: {
           searchDepth: 1
