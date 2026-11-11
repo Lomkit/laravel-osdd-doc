@@ -1,0 +1,107 @@
+.lb-tile {
+  --ease: cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.lb-tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(28rem 14rem at 0% 0%, color-mix(in oklab, var(--ui-primary) 9%, transparent), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.lb-tile:hover::before,
+.lb-tile:focus-visible::before {
+  opacity: 1;
+}
+
+.lb-visual {
+  background:
+    radial-gradient(color-mix(in oklab, var(--ui-text-muted) 14%, transparent) 1px, transparent 1px) 0 0 / 14px 14px,
+    var(--ui-bg-muted);
+}
+
+.lb-old {
+  text-decoration-line: line-through;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.3s ease, opacity 0.3s ease;
+}
+
+.lb-tile:hover .lb-old {
+  text-decoration-color: var(--ui-error);
+  opacity: 0.55;
+}
+
+.lb-flag,
+.lb-ns {
+  border-radius: 0.25rem;
+  color: var(--ui-primary);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lb-tile:hover .lb-flag,
+.lb-tile:hover .lb-ns {
+  background: color-mix(in oklab, var(--ui-primary) 14%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--ui-primary) 14%, transparent);
+}
+
+.lb-path,
+.lb-annotation {
+  transition: translate 0.45s var(--ease), box-shadow 0.45s ease;
+}
+
+.lb-tile:hover .lb-path {
+  translate: 6px 0;
+}
+
+.lb-tile:hover .lb-annotation {
+  translate: 0 -3px;
+  box-shadow: 0 10px 24px -12px var(--ui-error);
+}
+
+.lb-tick {
+  color: var(--ui-text-dimmed);
+  transition: color 0.25s ease calc(var(--i) * 90ms), scale 0.35s var(--ease) calc(var(--i) * 90ms);
+}
+
+.lb-tile:hover .lb-tick {
+  color: var(--ui-success);
+  scale: 1.2;
+}
+
+.lb-bar {
+  width: 100%;
+  transform-origin: left;
+  transition: transform 0.9s var(--ease);
+}
+
+.lb-tile:not(:hover) .lb-bar {
+  transform: scaleX(0.35);
+}
+
+.lb-pill {
+  transition: border-color 0.25s ease calc(var(--i) * 70ms), color 0.25s ease calc(var(--i) * 70ms), translate 0.35s var(--ease) calc(var(--i) * 70ms);
+}
+
+.lb-tile:hover .lb-pill {
+  border-color: color-mix(in oklab, var(--ui-primary) 50%, transparent);
+  color: var(--ui-text-highlighted);
+  translate: 0 -2px;
+}
+
+.lb-seed {
+  transition: background-color 0.25s ease calc(var(--i) * 120ms);
+}
+
+.lb-tile:hover .lb-seed {
+  background: color-mix(in oklab, var(--ui-primary) 10%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-tile *,
+  .lb-tile::before {
+    transition: none !important;
+  }
+}

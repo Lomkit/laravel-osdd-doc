@@ -1,0 +1,222 @@
+.hs {
+  --c-users: #0284c7;
+  --c-orders: var(--ui-primary);
+  --c-billing: #059669;
+  --c-osdd: #7c3aed;
+  --hs-chip-bg: var(--ui-bg);
+  --ease-fly: cubic-bezier(0.2, 1.15, 0.35, 1);
+
+  background:
+    radial-gradient(70% 60% at 70% 0%, color-mix(in oklab, var(--ui-primary) 10%, transparent), transparent 70%),
+    linear-gradient(to right, color-mix(in oklab, var(--ui-border) 55%, transparent) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(to bottom, color-mix(in oklab, var(--ui-border) 55%, transparent) 1px, transparent 1px) 0 0 / 24px 24px,
+    color-mix(in oklab, var(--ui-bg-elevated) 50%, var(--ui-bg));
+}
+
+.dark .hs {
+  --c-users: #38bdf8;
+  --c-billing: #34d399;
+  --c-osdd: #a78bfa;
+  --hs-chip-bg: #0b1222;
+
+  background:
+    radial-gradient(70% 60% at 70% 0%, color-mix(in oklab, var(--ui-primary) 16%, transparent), transparent 70%),
+    linear-gradient(to right, rgb(255 255 255 / 0.035) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(to bottom, rgb(255 255 255 / 0.035) 1px, transparent 1px) 0 0 / 24px 24px,
+    #070b16;
+}
+
+.hs .is-users { --c: var(--c-users); }
+.hs .is-orders { --c: var(--c-orders); }
+.hs .is-billing { --c: var(--c-billing); }
+.hs .is-osdd { --c: var(--c-osdd); }
+
+.hs-stage {
+  container-type: inline-size;
+}
+
+.hs-dot {
+  flex-shrink: 0;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 9999px;
+  background: var(--c);
+  box-shadow: 0 0 0.6em color-mix(in oklab, var(--c) 70%, transparent);
+}
+
+.hs-frame {
+  border: 1px dashed var(--ui-border-accented);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.hs-frame-label {
+  position: absolute;
+  top: 1.6cqw;
+  left: 2.4cqw;
+  font-size: clamp(9px, 2cqw, 12px);
+  color: var(--ui-text-muted);
+}
+
+.hs-card {
+  left: calc(var(--x) * 1cqw);
+  top: calc(var(--y) * 1cqw);
+  width: calc(var(--card-w) * 1cqw);
+  height: calc(var(--card-h) * 1cqw);
+  border: 1px solid color-mix(in oklab, var(--c) 45%, transparent);
+  background: color-mix(in oklab, var(--c) 7%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--c) 10%, transparent), 0 1.5cqw 5cqw -2cqw color-mix(in oklab, var(--c) 55%, transparent);
+  transition: opacity 0.6s ease var(--delay), scale 0.8s var(--ease-fly) var(--delay), box-shadow 0.8s ease;
+}
+
+.hs-card.is-osdd {
+  border-style: dashed;
+}
+
+.hs-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 2cqw 2.2cqw 0;
+  font-size: clamp(9.5px, 2.25cqw, 13.5px);
+  color: var(--c);
+  white-space: nowrap;
+}
+
+.hs-chip {
+  width: calc(var(--chip-w) * 1cqw);
+  height: calc(var(--chip-h) * 1cqw);
+  translate: calc(var(--sx) * 1cqw) calc(var(--sy) * 1cqw);
+  rotate: 0deg;
+  transition: translate 1.15s var(--ease-fly) var(--delay), rotate 1.15s var(--ease-fly) var(--delay);
+}
+
+.hs-chip-body {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  height: 100%;
+  padding: 0 0.75em;
+  border-radius: min(1.2cqw, 8px);
+  border: 1px solid color-mix(in oklab, var(--c) 35%, var(--ui-border));
+  background: color-mix(in oklab, var(--c) 9%, var(--hs-chip-bg));
+  color: var(--ui-text-highlighted);
+  font-size: clamp(9px, 2.25cqw, 13px);
+  transition: border-color 0.6s ease calc(var(--delay) + 0.7s), background-color 0.6s ease calc(var(--delay) + 0.7s);
+}
+
+.hs-lines {
+  pointer-events: none;
+  overflow: visible;
+}
+
+.hs-tangle {
+  fill: none;
+  stroke: #f43f5e;
+  stroke-width: 0.28;
+  stroke-dasharray: 0.9 0.7;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.hs-edges {
+  filter: drop-shadow(0 0 3px color-mix(in oklab, var(--ui-primary) 70%, transparent));
+}
+
+.hs-edge {
+  fill: none;
+  stroke: var(--ui-primary);
+  stroke-width: 0.5;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.7s cubic-bezier(0.65, 0, 0.35, 1) var(--delay);
+}
+
+.hs-arrow {
+  fill: var(--ui-primary);
+  transition: opacity 0.3s ease var(--delay);
+}
+
+.hs-pulse {
+  fill: #fff7ed;
+}
+
+.hs-caption-live {
+  display: none;
+}
+
+.hs-check {
+  transition: opacity 0.5s ease 0.6s, translate 0.5s var(--ease-fly) 0.6s;
+}
+
+.osdd-motion .hs-caption-live {
+  display: inline;
+}
+
+.osdd-motion .hs-caption-final {
+  display: none;
+}
+
+.osdd-motion .hs[data-phase="messy"] .hs-frame {
+  opacity: 1;
+}
+
+.osdd-motion .hs[data-phase="messy"] .hs-tangle {
+  opacity: 0.85;
+  animation: hs-flow 1.4s linear infinite;
+}
+
+.osdd-motion .hs[data-phase="messy"] .hs-card {
+  opacity: 0;
+  scale: 0.92;
+  transition-delay: 0s;
+}
+
+.osdd-motion .hs[data-phase="messy"] .hs-chip {
+  translate: calc(var(--mx) * 1cqw) calc(var(--my) * 1cqw);
+  rotate: var(--mr);
+  transition-duration: 0.7s;
+  transition-delay: 0s;
+}
+
+.osdd-motion .hs[data-phase="messy"] .hs-chip-body {
+  border-color: var(--ui-border-accented);
+  background: var(--hs-chip-bg);
+  transition-delay: 0s;
+  animation: hs-wobble 2.4s ease-in-out var(--delay) infinite alternate;
+}
+
+.osdd-motion .hs:not([data-phase="graph"]) .hs-card {
+  box-shadow: none;
+}
+
+.osdd-motion .hs:not([data-phase="graph"]) .hs-edge {
+  stroke-dashoffset: 1;
+  transition-duration: 0.2s;
+  transition-delay: 0s;
+}
+
+.osdd-motion .hs:not([data-phase="graph"]) .hs-arrow,
+.osdd-motion .hs:not([data-phase="graph"]) .hs-check {
+  opacity: 0;
+  transition-delay: 0s;
+}
+
+.osdd-motion .hs:not([data-phase="graph"]) .hs-check {
+  translate: 0 6px;
+}
+
+@keyframes hs-flow {
+  to { stroke-dashoffset: -3.2; }
+}
+
+@keyframes hs-wobble {
+  from { translate: 0 -0.25cqw; }
+  to { translate: 0 0.25cqw; }
+}
+
+html:not(.dark) .hs-pulse {
+  fill: var(--ui-primary);
+  stroke: #fff;
+  stroke-width: 0.25;
+}
