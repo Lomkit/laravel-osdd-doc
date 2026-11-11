@@ -117,8 +117,6 @@ const links = computed(() => {
               :title="sponsors.title"
               :links="sponsors.links"
             />
-
-            <SponsorsAd />
           </div>
         </template>
       </UContentToc>

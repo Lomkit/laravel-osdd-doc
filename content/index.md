@@ -218,8 +218,6 @@ links:
   :::
 :::
 
-::landing-partners
-::
 
 :::u-page-section
 ---
