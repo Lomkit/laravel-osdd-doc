@@ -3,72 +3,31 @@ seo:
   title: "Laravel OSDD: split your Laravel application into layers"
   description: |
     Laravel OSDD splits your application into layers: one Composer package per domain,
-    with its own models, migrations, seeders, tests, routes and service provider.
+    with its own models, migrations, seeders, tests, routes and service provider,
+    and osdd:check keeps the boundaries between them.
 ---
 
-:::u-page-hero
----
-orientation: horizontal
----
-  :::prose-pre
-  ---
-  code: composer require lomkit/laravel-osdd
-  filename: Terminal
-  ---
-  ```bash
-  composer require lomkit/laravel-osdd
-  php artisan osdd:start
-  ```
-  :::
+::landing-hero
+::
 
-#title
-One domain, one layer.
+::landing-problem
+::
 
-#description
-Laravel OSDD splits your application into layers. Each layer is a Composer package with its own models, migrations, seeders, tests, routes and service provider, and `osdd:check` makes sure each layer only uses the layers it requires.
-
-#links
-  :::u-button
-  ---
-  size: xl
-  to: /getting-started/installation
-  trailing-icon: i-lucide-arrow-right
-  ---
-  Get started
-  :::
-
-  :::u-button
-  ---
-  color: neutral
-  icon: i-simple-icons-github
-  size: xl
-  target: _blank
-  to: https://github.com/Lomkit/laravel-osdd
-  variant: subtle
-  ---
-  Star on github
-  :::
-:::
+::landing-steps
+::
 
 :::u-page-section
-#title
-Keep every domain in its own package
-
+---
+title: Everything a domain needs, in its own package
+ui:
+  container: py-16 sm:py-20 lg:py-24
+description: A layer is a plain Composer package in your repository. OSDD gives it the tooling a Laravel app gets for app/.
+---
 #features
   :::u-page-feature
   ---
-  icon: i-lucide-shield-check
-  ---
-  #title
-  Boundaries, checked
-
-  #description
-  `osdd:check` fails when a layer uses a layer it does not require, or when layers require each other. Run it in CI with `--format=github`.
-  :::
-
-  :::u-page-feature
-  ---
   icon: i-lucide-package
+  to: /concepts/layers
   ---
   #title
   Layers are Composer packages
@@ -80,6 +39,7 @@ Keep every domain in its own package
   :::u-page-feature
   ---
   icon: i-simple-icons-laravel
+  to: /commands/make-commands
   ---
   #title
   Artisan twins
@@ -90,329 +50,195 @@ Keep every domain in its own package
 
   :::u-page-feature
   ---
-  icon: i-lucide-component
+  icon: i-lucide-shield-check
+  to: /concepts/boundaries
   ---
   #title
-  Views, components and Livewire
+  Boundaries checked in CI
 
   #description
-  `withViews()`, `withComponents()` and `withLivewire()` register them under the layer name: `<x-orders::alert />`.
+  `osdd:check` fails when a layer uses a layer it does not require, or when layers require each other. GitHub annotations included.
   :::
 
   :::u-page-feature
   ---
-  icon: i-lucide-network
+  icon: i-lucide-test-tube
+  to: /guides/testing-and-ci
   ---
   #title
-  Inventory and graph
+  Tests, seeders and config per layer
 
   #description
-  `osdd:list` shows every layer with its contents and health, and `osdd:graph` draws the layers in Mermaid, DOT or JSON.
+  One PHPUnit suite per layer, seeders ordered across layers, and config overrides from the layer that owns them.
   :::
 
   :::u-page-feature
   ---
-  icon: i-lucide-database
+  icon: i-simple-icons-livewire
+  to: /integrations/livewire
   ---
   #title
-  Seeders, config and listeners per layer
+  Livewire and Filament
 
   #description
-  `LayersSeeder` runs the seeders of every layer, a layer overrides the config of any package, and layer listeners can be discovered.
-  :::
-
-  :::u-page-feature
-  ---
-  icon: i-lucide-zap
-  ---
-  #title
-  Cached in production
-
-  #description
-  `php artisan optimize` caches the discovered layers, so a request never scans the layer folders.
-  :::
-
-  :::u-page-feature
-  ---
-  icon: i-lucide-layout-dashboard
-  ---
-  #title
-  Filament, optional
-
-  #description
-  The `LayersPlugin` panel plugin discovers the resources, pages and widgets of every layer.
+  `<livewire:orders::cart />` from a layer, and a Filament plugin that discovers the resources of every layer. Both optional.
   :::
 
   :::u-page-feature
   ---
   icon: i-lucide-bot
+  to: /integrations/laravel-boost
   ---
   #title
-  Laravel Boost skill
+  A Boost skill for your agent
 
   #description
-  The package ships a Boost skill, so your coding agent writes inside layers, not in `app/`.
+  The package ships a Laravel Boost skill, so your coding agent creates layers and writes inside them, not in `app/`.
   :::
 :::
 
-
 :::u-page-section
 ---
+title: Each layer wires itself
 ui:
-  container: sm:py-6 lg:py-7 py-6
-title: First setup
-id: first-setup
----
-:::
-
-:::u-page-section
----
-ui:
-  container: sm:py-6 lg:py-7 py-6
-title: First, convert your project
+  container: py-10 sm:py-14 lg:py-16 lg:grid-cols-[2fr_3fr]
+description: A layer's provider extends LayerServiceProvider. It loads the layer's migrations, seeders, routes and views, so adding a domain never touches a shared file.
 orientation: horizontal
-variant: naked
 links:
-  - label: Read the quick start
-    to: /getting-started/quick-start
-    trailingIcon: i-heroicons-arrow-right-20-solid
+  - label: Service providers
+    to: /concepts/service-providers
+    trailingIcon: i-lucide-arrow-right
     color: neutral
     variant: outline
 ---
-#description
-:::prose-pre
----
-code: php artisan osdd:start
-filename: Terminal
----
-```bash
-php artisan osdd:start
-```
-:::
-
-#default
-:::prose-pre
----
-filename: Project
----
-```bash
-functional/
-  users/
-    composer.json
-    src/Models/User.php
-    src/Providers/UsersServiceProvider.php
-    database/migrations/
-technical/
-  osdd/
-    composer.json
-    config/osdd.php
-```
-:::
-:::
-
-:::u-page-section
----
-ui:
-  container: sm:py-6 lg:py-7 py-6
-title: Then, create a layer per domain
-orientation: horizontal
-variant: naked
-reverse: true
-links:
-  - label: Create layers
-    to: /commands/osdd-layer
-    trailingIcon: i-heroicons-arrow-right-20-solid
-    color: neutral
-    variant: outline
----
-#description
-:::prose-pre
----
-code: php artisan osdd:layer
-filename: Terminal
----
-```bash
-php artisan osdd:layer
-```
-:::
-
-#default
-:::prose-pre
----
-filename: functional/orders/composer.json
----
-```json
-{
-    "name": "functional/orders",
-    "type": "layer",
-    "autoload": {
-        "psr-4": {
-            "Functional\\Orders\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Functional\\Orders\\Providers\\OrdersServiceProvider"
-            ]
-        }
-    }
-}
-```
-:::
-:::
-
-:::u-page-section
----
-ui:
-  container: sm:py-6 lg:py-7 py-6
-title: Generate code inside it
-orientation: horizontal
-variant: naked
-links:
-  - label: Every generator
-    to: /commands/make-commands
-    trailingIcon: i-heroicons-arrow-right-20-solid
-    color: neutral
-    variant: outline
----
-#description
-:::prose-pre
----
-filename: Terminal
----
-```bash
-php artisan osdd:controller OrderController --layer=functional/orders
-```
-:::
-
-#default
-:::prose-pre
----
-filename: Project
----
-```bash
-functional/orders/
-└── src/
-    └── Http/
-        └── Controllers/
-            └── OrderController.php   # Functional\Orders\Http\Controllers
-```
-:::
-:::
-
-:::u-page-section
----
-ui:
-  container: sm:py-6 lg:py-7 py-6
-title: Wire it in the layer's provider
-orientation: horizontal
-variant: naked
-reverse: true
-links:
-  - label: The layer provider
-    to: /layers/service-provider
-    trailingIcon: i-heroicons-arrow-right-20-solid
-    color: neutral
-    variant: outline
----
-#description
-:::prose-pre
----
-filename: Terminal
----
-```bash
-php artisan migrate
-php artisan osdd:seed
-php artisan osdd:phpunit
-```
-:::
-
-#default
-:::prose-pre
----
-filename: OrdersServiceProvider.php
----
-```php
-<?php
-
-namespace Functional\Orders\Providers;
-
-use Functional\Orders\Database\Seeders\OrdersSeeder;
-use Lomkit\Osdd\LayerServiceProvider;
-
-class OrdersServiceProvider extends LayerServiceProvider
-{
-    public function boot(): void
-    {
-        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
-        $this->loadSeeders([OrdersSeeder::class]);
-
-        $this->withRouting(
-            web: __DIR__ . '/../../routes/web.php',
-            api: __DIR__ . '/../../routes/api.php',
-        );
-
-        $this->withViews(__DIR__ . '/../../resources/views');
-    }
-}
-```
-:::
-:::
-
-:::u-page-section
----
-ui:
-  container: sm:py-6 lg:py-7 py-6
-title: Finally, keep the boundaries
-orientation: horizontal
-variant: naked
-links:
-  - label: Layer boundaries
-    to: /layers/boundaries
-    trailingIcon: i-heroicons-arrow-right-20-solid
-    color: neutral
-    variant: outline
----
-#description
-:::prose-pre
----
-code: php artisan osdd:check
-filename: Terminal
----
-```bash
-php artisan osdd:check
-```
-:::
-
-#default
-:::prose-pre
----
-filename: Output
----
-```bash
-  ERROR  functional/orders uses functional/billing but does not require it.
-
-  functional/orders/src/Checkout.php:7 ...... Functional\Billing\Models\Invoice
-
-  ERROR  1 boundary violation in 3 layers.
-```
-:::
-:::
-
-
-:::u-page-section
----
-ui:
-  container: sm:py-6 lg:py-7 py-6
----
-#links
-  :::u-button
+  :::prose-pre
   ---
-  color: primary
-  size: xl
-  to: /getting-started/installation
-  trailingIcon: i-lucide-arrow-right
+  filename: OrdersServiceProvider.php
   ---
-  Get started
+  ```php
+  class OrdersServiceProvider extends LayerServiceProvider
+  {
+      public function boot(): void
+      {
+          $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
+          $this->loadSeeders([OrdersSeeder::class]);
+
+          $this->withRouting(
+              web: __DIR__.'/../../routes/web.php',
+              api: __DIR__.'/../../routes/api.php',
+          );
+
+          $this->withViews(__DIR__.'/../../resources/views');
+      }
+
+      public function register(): void
+      {
+          $this->overrideConfigFrom(__DIR__.'/../../config/orders.php', 'orders');
+      }
+  }
+  ```
   :::
+:::
+
+:::u-page-section
+---
+title: Boundaries, checked on every pull request
+ui:
+  container: py-10 sm:py-14 lg:py-16 lg:grid-cols-[3fr_2fr]
+  wrapper: lg:order-last
+description: All layers share one autoloader, so PHP lets any layer use any other. osdd:check reads every layer and fails when one uses a layer it does not require. In GitHub Actions, each violation lands on the pull request as an annotation.
+orientation: horizontal
+links:
+  - label: Tests and CI
+    to: /guides/testing-and-ci
+    trailingIcon: i-lucide-arrow-right
+    color: neutral
+    variant: outline
+---
+  ::landing-terminal
+  ---
+  title: php artisan osdd:check
+  lines:
+    - kind: command
+      text: php artisan osdd:check
+    - kind: error
+      text: "  ERROR  functional/orders uses functional/billing but does not require it."
+    - kind: output
+      text: ""
+    - kind: output
+      text: "  functional/orders/src/Checkout.php:7 ..... Functional\\Billing\\Models\\Invoice"
+    - kind: output
+      text: ""
+    - kind: warning
+      text: "   WARN  functional/billing requires technical/core but does not use it."
+    - kind: output
+      text: ""
+    - kind: error
+      text: "  ERROR  1 boundary violation in 4 layers (1 unused requirement)."
+  ---
+  ::
+:::
+
+:::u-page-section
+---
+title: Built for coding agents
+ui:
+  container: py-10 sm:py-14 lg:py-16
+description: With Laravel Boost, your agent learns where files go in an OSDD project. It reads the layers with osdd:list --json, generates code with --layer, and runs osdd:check before it finishes.
+orientation: horizontal
+links:
+  - label: Laravel Boost
+    to: /integrations/laravel-boost
+    trailingIcon: i-lucide-arrow-right
+    color: neutral
+    variant: outline
+---
+  :::prose-pre
+  ---
+  filename: php artisan osdd:list --json (excerpt)
+  ---
+  ```json
+  {
+      "layers": [
+          {
+              "name": "functional/orders",
+              "namespace": "Functional\\Orders\\",
+              "requires": ["functional/users"],
+              "health": {
+                  "required": true,
+                  "path_repository": true,
+                  "installed": true,
+                  "provider_extends_layer_service_provider": true,
+                  "test_suite": true
+              }
+          }
+      ]
+  }
+  ```
+  :::
+:::
+
+::landing-partners
+::
+
+:::u-page-section
+---
+ui:
+  container: pt-0 sm:pt-0 lg:pt-0 pb-24 sm:pb-32
+---
+  :::u-page-c-t-a
+  ---
+  title: Split your first domain in five minutes
+  description: Install the package, run osdd:start on a fresh project, and create your first layer.
+  variant: subtle
+  links:
+    - label: Get started
+      to: /getting-started/quick-start
+      trailingIcon: i-lucide-arrow-right
+    - label: Read the concepts
+      to: /concepts/layers
+      color: neutral
+      variant: outline
+  ---
+  :::
+:::
