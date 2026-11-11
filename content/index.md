@@ -25,7 +25,7 @@ orientation: horizontal
 One domain, one layer.
 
 #description
-Laravel OSDD splits your application into layers. Each layer is a Composer package with its own models, migrations, seeders, tests, routes and service provider.
+Laravel OSDD splits your application into layers. Each layer is a Composer package with its own models, migrations, seeders, tests, routes and service provider, and `osdd:check` makes sure each layer only uses the layers it requires.
 
 #links
   :::u-button
@@ -57,6 +57,17 @@ Keep every domain in its own package
 #features
   :::u-page-feature
   ---
+  icon: i-lucide-shield-check
+  ---
+  #title
+  Boundaries, checked
+
+  #description
+  `osdd:check` fails when a layer uses a layer it does not require, or when layers require each other. Run it in CI with `--format=github`.
+  :::
+
+  :::u-page-feature
+  ---
   icon: i-lucide-package
   ---
   #title
@@ -74,18 +85,29 @@ Keep every domain in its own package
   Artisan twins
 
   #description
-  Every class generator has an `osdd:*` twin: `osdd:model`, `osdd:controller`, `osdd:migration` write inside the layer you pick.
+  Every `make:*` generator has an `osdd:*` twin that writes inside the layer you pick and wires the layer provider.
   :::
 
   :::u-page-feature
   ---
-  icon: i-lucide-flask-conical
+  icon: i-lucide-component
   ---
   #title
-  One test suite per layer
+  Views, components and Livewire
 
   #description
-  `osdd:phpunit` adds a test suite for each layer to `phpunit.xml`. Run one layer's tests with `--testsuite`.
+  `withViews()`, `withComponents()` and `withLivewire()` register them under the layer name: `<x-orders::alert />`.
+  :::
+
+  :::u-page-feature
+  ---
+  icon: i-lucide-network
+  ---
+  #title
+  Inventory and graph
+
+  #description
+  `osdd:list` shows every layer with its contents and health, and `osdd:graph` draws the layers in Mermaid, DOT or JSON.
   :::
 
   :::u-page-feature
@@ -93,21 +115,32 @@ Keep every domain in its own package
   icon: i-lucide-database
   ---
   #title
-  Seeders per layer
+  Seeders, config and listeners per layer
 
   #description
-  Each layer registers its seeders with a priority. `osdd:seed` runs them all, without a central `DatabaseSeeder`.
+  `LayersSeeder` runs the seeders of every layer, a layer overrides the config of any package, and layer listeners can be discovered.
   :::
 
   :::u-page-feature
   ---
-  icon: i-lucide-settings-2
+  icon: i-lucide-zap
   ---
   #title
-  Config per layer
+  Cached in production
 
   #description
-  A layer overrides the config of any package, Horizon or Telescope included, with `overrideConfigFrom()`.
+  `php artisan optimize` caches the discovered layers, so a request never scans the layer folders.
+  :::
+
+  :::u-page-feature
+  ---
+  icon: i-lucide-layout-dashboard
+  ---
+  #title
+  Filament, optional
+
+  #description
+  The `LayersPlugin` panel plugin discovers the resources, pages and widgets of every layer.
   :::
 
   :::u-page-feature
@@ -121,6 +154,7 @@ Keep every domain in its own package
   The package ships a Boost skill, so your coding agent writes inside layers, not in `app/`.
   :::
 :::
+
 
 :::u-page-section
 ---
@@ -271,7 +305,7 @@ functional/orders/
 ---
 ui:
   container: sm:py-6 lg:py-7 py-6
-title: Finally, wire it in the layer's provider
+title: Wire it in the layer's provider
 orientation: horizontal
 variant: naked
 reverse: true
@@ -318,11 +352,54 @@ class OrdersServiceProvider extends LayerServiceProvider
             web: __DIR__ . '/../../routes/web.php',
             api: __DIR__ . '/../../routes/api.php',
         );
+
+        $this->withViews(__DIR__ . '/../../resources/views');
     }
 }
 ```
 :::
 :::
+
+:::u-page-section
+---
+ui:
+  container: sm:py-6 lg:py-7 py-6
+title: Finally, keep the boundaries
+orientation: horizontal
+variant: naked
+links:
+  - label: Layer boundaries
+    to: /layers/boundaries
+    trailingIcon: i-heroicons-arrow-right-20-solid
+    color: neutral
+    variant: outline
+---
+#description
+:::prose-pre
+---
+code: php artisan osdd:check
+filename: Terminal
+---
+```bash
+php artisan osdd:check
+```
+:::
+
+#default
+:::prose-pre
+---
+filename: Output
+---
+```bash
+  ERROR  functional/orders uses functional/billing but does not require it.
+
+  functional/orders/src/Checkout.php:7 ...... Functional\Billing\Models\Invoice
+
+  ERROR  1 boundary violation in 3 layers.
+```
+:::
+:::
+
 
 :::u-page-section
 ---
