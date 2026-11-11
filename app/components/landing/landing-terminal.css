@@ -1,0 +1,98 @@
+.lt-window {
+  background: #0b1120;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.08),
+    0 30px 80px -30px color-mix(in oklab, var(--ui-primary) 45%, rgb(15 23 42 / 0.6));
+}
+
+.lt-body {
+  overflow-wrap: anywhere;
+}
+
+.osdd-motion .lt-body {
+  height: 27rem;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+}
+
+.lt-line {
+  scroll-snap-align: end;
+}
+
+.lt-label {
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 0.2rem;
+  padding: 0 0.35rem;
+  font-size: 0.85em;
+  line-height: 1.15rem;
+  font-weight: 700;
+}
+
+.lt-dots {
+  align-self: center;
+  height: 2px;
+  background: radial-gradient(circle, currentColor 1px, transparent 1.4px) 0 0 / 6px 2px repeat-x;
+}
+
+.lt-added {
+  background: rgb(16 185 129 / 0.1);
+  box-shadow: inset 2px 0 0 rgb(52 211 153);
+}
+
+.lt-caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.1em;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  background: var(--ui-primary);
+  animation: lt-blink 1s steps(1) infinite;
+}
+
+.osdd-motion .lt-out {
+  animation: lt-in 0.28s ease-out both;
+}
+
+@keyframes lt-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@keyframes lt-blink {
+  50% { opacity: 0; }
+}
+
+@media (max-width: 640px) {
+  .osdd-motion .lt-body {
+    height: 30rem;
+  }
+}
+
+.lt-error,
+.lt-success {
+  margin-inline: -1rem;
+  padding-inline: 1.5rem 1rem;
+}
+
+.lt-error {
+  background: rgb(244 63 94 / 0.08);
+}
+
+.lt-success {
+  background: rgb(16 185 129 / 0.1);
+  box-shadow: inset 2px 0 0 rgb(52 211 153);
+}
+
+.osdd-motion .lt-success {
+  animation: lt-in 0.28s ease-out both, lt-pass 1.6s ease-out 0.2s both;
+}
+
+@keyframes lt-pass {
+  from {
+    background: rgb(16 185 129 / 0.35);
+  }
+}
