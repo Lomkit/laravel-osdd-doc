@@ -104,10 +104,17 @@ export default defineNuxtConfig({
         ]
       },
       {
-        title: 'Layers',
+        title: 'Concepts',
         contentCollection: 'docs',
         contentFilters: [
-          { field: 'path', operator: 'LIKE', value: '/layers%' }
+          { field: 'path', operator: 'LIKE', value: '/concepts%' }
+        ]
+      },
+      {
+        title: 'Guides',
+        contentCollection: 'docs',
+        contentFilters: [
+          { field: 'path', operator: 'LIKE', value: '/guides%' }
         ]
       },
       {
@@ -129,6 +136,13 @@ export default defineNuxtConfig({
         contentCollection: 'docs',
         contentFilters: [
           { field: 'path', operator: 'LIKE', value: '/integrations%' }
+        ]
+      },
+      {
+        title: 'Upgrade',
+        contentCollection: 'docs',
+        contentFilters: [
+          { field: 'path', operator: 'LIKE', value: '/upgrade%' }
         ]
       }
     ]
