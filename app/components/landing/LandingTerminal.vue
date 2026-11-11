@@ -126,17 +126,19 @@ onBeforeUnmount(() => cancelAnimationFrame(frame))
                 @click="playFrom(0)"
               />
             </div>
-            <div
-              ref="body"
-              class="lt-body overflow-x-hidden px-4 py-4 font-mono text-[11.5px] leading-6 sm:text-[13px]"
-            >
-              <LandingTerminalLine
-                v-for="(entry, index) in shown"
-                :key="index"
-                :line="entry.line"
-                :chars="typedChars(entry)"
-                :caret="motion && entry === current && !finished"
-              />
+            <div class="py-4">
+              <div
+                ref="body"
+                class="lt-body overflow-x-hidden px-4 font-mono text-[11.5px] leading-6 sm:text-[13px]"
+              >
+                <LandingTerminalLine
+                  v-for="(entry, index) in shown"
+                  :key="index"
+                  :line="entry.line"
+                  :chars="typedChars(entry)"
+                  :caret="motion && entry === current && !finished"
+                />
+              </div>
             </div>
           </div>
           <p class="mt-3 text-xs text-dimmed">

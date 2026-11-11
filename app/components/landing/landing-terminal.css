@@ -12,7 +12,12 @@
 .osdd-motion .lt-body {
   height: 27rem;
   overflow-y: auto;
+  scroll-snap-type: y mandatory;
   scrollbar-width: none;
+}
+
+.lt-line {
+  scroll-snap-align: end;
 }
 
 .lt-label {

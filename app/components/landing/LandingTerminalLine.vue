@@ -47,7 +47,7 @@ defineProps<{
   </div>
   <div
     v-else-if="line.kind === 'comment'"
-    class="lt-line lt-out pt-2 text-slate-500"
+    class="lt-line lt-out text-slate-500"
   >
     {{ line.text }}
   </div>
@@ -59,6 +59,6 @@ defineProps<{
   </div>
   <div
     v-else
-    class="lt-line h-3"
+    class="lt-line h-6"
   />
 </template>
