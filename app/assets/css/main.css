@@ -25,3 +25,8 @@
     overflow-wrap: anywhere;
   }
 }
+
+/* Wider layout on large screens, as on the Laravel Rest Api docs: 80rem left most of a wide screen empty. */
+:root {
+  --ui-container: 110rem;
+}
