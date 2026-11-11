@@ -2,7 +2,7 @@
 const tiles = [
   {
     key: 'twins',
-    span: 'lg:col-span-4',
+    span: 'sm:col-span-2 lg:col-span-4',
     title: 'Every make:* has an osdd:* twin',
     description: 'Same arguments and stubs, plus the layer to write in. The file lands in the layer, and the layer provider is wired for you.',
     to: '/commands/make-commands'
@@ -22,32 +22,25 @@ const tiles = [
     to: '/guides/testing-and-ci'
   },
   {
+    key: 'seeders',
+    span: 'sm:col-span-2 lg:col-span-4',
+    title: 'Seeders from every layer',
+    description: 'Each layer registers its seeders. LayersSeeder runs them all through db:seed, migrate --seed or osdd:seed.',
+    to: '/guides/seeders'
+  },
+  {
     key: 'views',
-    span: 'lg:col-span-2',
+    span: 'lg:col-span-3',
     title: 'Views and components per layer',
     description: 'Registered under the layer name, like a package.',
     to: '/guides/views-and-components'
   },
   {
     key: 'cache',
-    span: 'lg:col-span-2',
+    span: 'lg:col-span-3',
     title: 'Cached in production',
     description: 'optimize caches the discovered layers: no folder scan per request.',
     to: '/guides/production'
-  },
-  {
-    key: 'livewire',
-    span: 'lg:col-span-3',
-    title: 'Livewire and Filament, if you use them',
-    description: 'Livewire components registered under the layer name, and a Filament plugin that finds the resources of every layer. Neither is required.',
-    to: '/integrations/filament'
-  },
-  {
-    key: 'seeders',
-    span: 'lg:col-span-3',
-    title: 'Seeders from every layer',
-    description: 'Each layer registers its seeders. LayersSeeder runs them all through db:seed, migrate --seed or osdd:seed.',
-    to: '/guides/seeders'
   }
 ]
 </script>
@@ -69,7 +62,7 @@ const tiles = [
           v-for="(tile, index) in tiles"
           :key="tile.key"
           :delay="(index % 3) * 80"
-          :class="[tile.span, index === 0 || index >= 5 ? 'sm:col-span-2' : '']"
+          :class="tile.span"
         >
           <NuxtLink
             :to="tile.to"

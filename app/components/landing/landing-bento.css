@@ -81,16 +81,6 @@
   transform: scaleX(0.35);
 }
 
-.lb-pill {
-  transition: border-color 0.25s ease calc(var(--i) * 70ms), color 0.25s ease calc(var(--i) * 70ms), translate 0.35s var(--ease) calc(var(--i) * 70ms);
-}
-
-.lb-tile:hover .lb-pill {
-  border-color: color-mix(in oklab, var(--ui-primary) 50%, transparent);
-  color: var(--ui-text-highlighted);
-  translate: 0 -2px;
-}
-
 .lb-seed {
   transition: background-color 0.25s ease calc(var(--i) * 120ms);
 }

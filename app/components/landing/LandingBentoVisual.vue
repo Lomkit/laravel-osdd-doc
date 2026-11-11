@@ -86,23 +86,6 @@ const seeders = [
       </p>
     </template>
 
-    <template v-else-if="tile === 'livewire'">
-      <p class="text-muted">
-        &lt;livewire:<span class="lb-ns">orders::</span>cart /&gt;
-      </p>
-      <p class="text-muted">
-        $panel-&gt;plugin(<span class="text-highlighted">LayersPlugin</span>::make())
-      </p>
-      <div class="mt-1 flex flex-wrap gap-1.5 font-sans">
-        <span
-          v-for="(item, index) in ['Resources', 'Pages', 'Widgets', 'Clusters']"
-          :key="item"
-          class="lb-pill rounded-full border border-default px-2 py-0.5 text-[11px] text-toned"
-          :style="{ '--i': index }"
-        >{{ item }}</span>
-      </div>
-    </template>
-
     <template v-else>
       <p
         v-for="(row, index) in seeders"
