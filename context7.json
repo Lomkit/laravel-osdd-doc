@@ -5,6 +5,7 @@
   "projectTitle": "Laravel OSDD",
   "description": "Laravel OSDD (lomkit/laravel-osdd) splits a Laravel application into domain modules called layers: one Composer package per domain, with its own models, migrations, routes and tests, and osdd:check to enforce the boundaries between them.",
   "folders": ["content"],
+  "excludeFiles": ["README.md"],
   "rules": [
     "This documentation covers Laravel OSDD 3.x (lomkit/laravel-osdd), which needs PHP 8.3+ and Laravel 13. Laravel 12 applications stay on Laravel OSDD 2.x.",
     "Install with composer require lomkit/laravel-osdd. Laravel discovers Lomkit\\Osdd\\OsddServiceProvider: there is nothing to register and nothing to publish.",
