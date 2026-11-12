@@ -7,6 +7,7 @@ const { copy, copied } = useClipboard()
 const site = useSiteConfig()
 
 const mdPath = computed(() => `${site.url}/raw${route.path}.md`)
+const prompt = computed(() => encodeURIComponent(`Read ${mdPath.value} and answer questions about it.`))
 
 const items = computed(() => [
   {
@@ -25,6 +26,18 @@ const items = computed(() => [
     icon: 'i-simple-icons-markdown',
     target: '_blank',
     to: `/raw${route.path}.md`
+  },
+  {
+    label: 'Open in ChatGPT',
+    icon: 'i-simple-icons-openai',
+    target: '_blank',
+    to: `https://chatgpt.com/?hints=search&q=${prompt.value}`
+  },
+  {
+    label: 'Open in Claude',
+    icon: 'i-simple-icons-claude',
+    target: '_blank',
+    to: `https://claude.ai/new?q=${prompt.value}`
   }
 ])
 
@@ -53,7 +66,7 @@ async function copyPage() {
         sideOffset: 8
       }"
       :ui="{
-        content: 'w-48'
+        content: 'w-52'
       }"
     >
       <UButton

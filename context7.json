@@ -1,0 +1,16 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "Laravel OSDD",
+  "description": "Laravel OSDD (lomkit/laravel-osdd) splits a Laravel application into domain modules called layers: one Composer package per domain, with its own models, migrations, routes and tests, and osdd:check to enforce the boundaries between them.",
+  "folders": ["content"],
+  "rules": [
+    "This documentation covers Laravel OSDD 3.x (lomkit/laravel-osdd), which needs PHP 8.3+ and Laravel 13. Laravel 12 applications stay on Laravel OSDD 2.x.",
+    "Install with composer require lomkit/laravel-osdd. Laravel discovers Lomkit\\Osdd\\OsddServiceProvider: there is nothing to register and nothing to publish.",
+    "Run php artisan osdd:start on a fresh project only: it deletes app/ and config/ and empties database/. On an existing application, skip it and create layers next to app/ with osdd:layer.",
+    "A layer is a Composer package with \"type\": \"layer\" in functional/ or technical/, named like functional/orders, and installed through a path repository of the root composer.json.",
+    "Generate code inside a layer with the osdd:* twin of each make:* command and --layer, for example php artisan osdd:model Order --layer=functional/orders. Do not write new code in app/.",
+    "A layer may only use the layers listed in the require section of its composer.json. Add one with osdd:layer functional/billing --requires=functional/orders, then check with php artisan osdd:check.",
+    "Layer service providers extend Lomkit\\Osdd\\LayerServiceProvider and are discovered through extra.laravel.providers of the layer composer.json. Do not list them in bootstrap/providers.php.",
+    "Register layer seeders with loadSeeders() in the layer provider and run them with php artisan osdd:seed. Sync the layer test suites of phpunit.xml with php artisan osdd:phpunit."
+  ]
+}

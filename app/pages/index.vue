@@ -19,8 +19,18 @@ useSeoMeta({
   twitterImage: 'https://laravel-osdd.lomkit.com/social-card.png'
 })
 
+const site = useSiteConfig()
+const { release } = useAppConfig()
+
 useHead({
-  script: [{
+  script: [jsonLdScript([
+    webSiteNode(site.url),
+    softwareDetailsNode(
+      site.url,
+      'Laravel OSDD splits a Laravel application into domain modules called layers: one Composer package per domain, with its own models, migrations, routes and tests. Its osdd:check command fails when a layer uses a layer it does not require.',
+      release
+    )
+  ]), {
     key: 'osdd-motion',
     tagPosition: 'head',
     innerHTML: 'try{if(!matchMedia(\'(prefers-reduced-motion: reduce)\').matches)document.documentElement.classList.add(\'osdd-motion\')}catch(e){}'

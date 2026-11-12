@@ -1,5 +1,9 @@
+import { execFileSync } from 'node:child_process'
 import { readdirSync } from 'node:fs'
+import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+
+const root = fileURLToPath(new URL('.', import.meta.url))
 
 // Markdown copy of every docs page, served under /raw for the MCP tools and the "Copy page" menu
 function rawMarkdownRoutes(directory: string, prefix = ''): string[] {
@@ -17,6 +21,34 @@ function rawMarkdownRoutes(directory: string, prefix = ''): string[] {
     return [`/raw${prefix}/${slug}.md`]
   })
 }
+
+// Date of the last commit of each content file, for the sitemap lastmod and the pages' dateModified.
+// A shallow clone would give every file the date of its single commit, so it gives no date at all.
+function contentCommitDates(): Map<string, string> {
+  const dates = new Map<string, string>()
+  const git = (args: string[]) => execFileSync('git', args, { cwd: root, encoding: 'utf8' })
+
+  try {
+    if (git(['rev-parse', '--is-shallow-repository']).trim() !== 'false') {
+      return dates
+    }
+
+    for (const commit of git(['log', '--format=%x00%cI', '--name-only', '--', 'content']).split('\0')) {
+      const [date, ...files] = commit.trim().split('\n')
+      for (const file of files.filter(Boolean)) {
+        if (date && !dates.has(join(root, file))) {
+          dates.set(join(root, file), date)
+        }
+      }
+    }
+  } catch {
+    dates.clear()
+  }
+
+  return dates
+}
+
+const commitDates = contentCommitDates()
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -64,11 +96,20 @@ export default defineNuxtConfig({
     prerender: {
       routes: [
         '/',
-        ...rawMarkdownRoutes(fileURLToPath(new URL('./content', import.meta.url)))
+        ...rawMarkdownRoutes(join(root, 'content'))
       ],
       crawlLinks: true,
       // Avoid Github pages trailing slash bug
       autoSubfolderIndex: false
+    }
+  },
+
+  hooks: {
+    'content:file:afterParse'(ctx) {
+      const lastmod = commitDates.get(ctx.file.path)
+      if (lastmod && ctx.collection.name === 'docs') {
+        ctx.content.sitemap = { ...(ctx.content.sitemap as object | undefined), lastmod }
+      }
     }
   },
 
@@ -89,13 +130,24 @@ export default defineNuxtConfig({
 
   llms: {
     domain: 'https://laravel-osdd.lomkit.com',
-    title: 'Laravel OSDD - Lomkit',
-    description: 'Laravel OSDD splits a Laravel application into layers: one Composer package per domain, with its own models, migrations, seeders, tests, routes and service provider.',
+    title: 'Laravel OSDD',
+    description: 'Laravel OSDD (lomkit/laravel-osdd) splits a Laravel application into domain modules called layers: one Composer package per domain, with its own models, migrations, routes and tests, and an Artisan command, osdd:check, that fails when a layer uses a layer it does not require. It is for teams growing a Laravel application with several business domains, and needs PHP 8.3+ and Laravel 13.',
     full: {
-      title: 'Laravel OSDD - Full Documentation',
-      description: 'Complete documentation for Laravel OSDD by Lomkit'
+      title: 'Laravel OSDD 3.x - Full Documentation',
+      description: 'Every page of the Laravel OSDD 3.x documentation in one Markdown file'
     },
     sections: [
+      {
+        title: 'How to use these docs with an AI',
+        description: 'These pages document Laravel OSDD 3.x, the current version, for Laravel 13. Laravel 12 applications stay on Laravel OSDD 2.x: the upgrade guide below lists the differences. Every page has a Markdown copy under /raw/<path>.md. The package ships a Laravel Boost skill for coding agents, and the docs can be served to an assistant over MCP through GitMCP: see the Use with AI page.',
+        links: [
+          {
+            title: 'Use with AI',
+            description: 'The Laravel Boost skill, llms.txt, the Markdown copies and the MCP setup',
+            href: 'https://laravel-osdd.lomkit.com/raw/integrations/laravel-boost.md'
+          }
+        ]
+      },
       {
         title: 'Getting Started',
         contentCollection: 'docs',
