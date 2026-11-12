@@ -1,5 +1,7 @@
 {
   "$schema": "https://context7.com/schema/context7.json",
+  "url": "https://context7.com/lomkit/laravel-osdd-doc",
+  "public_key": "pk_I3j3p8IZd3KHQP7UoVzdW",
   "projectTitle": "Laravel OSDD",
   "description": "Laravel OSDD (lomkit/laravel-osdd) splits a Laravel application into domain modules called layers: one Composer package per domain, with its own models, migrations, routes and tests, and osdd:check to enforce the boundaries between them.",
   "folders": ["content"],
