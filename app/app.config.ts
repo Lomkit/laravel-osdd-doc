@@ -14,6 +14,8 @@ export default defineAppConfig({
   seo: {
     siteName: 'Laravel OSDD - Lomkit'
   },
+  // Current release, in the home page's structured data: update it with each release
+  release: '3.0.0',
   header: {
     title: '',
     to: '/',

@@ -33,6 +33,8 @@ npm run generate
 
 The site is generated into `.output/public` and deployed to GitHub Pages on every push to `main`.
 
-## MCP server
+## Markdown, llms.txt and MCP
 
-The site ships an MCP server (`/mcp`) with two tools, `list-pages` and `get-page`, and a Markdown copy of every page under `/raw/<path>.md`. The MCP endpoint needs a server runtime (`npm run dev`, or `npm run build` with a server preset); the static build only contains the Markdown copies and `llms.txt`.
+The static build publishes `llms.txt`, `llms-full.txt` and a Markdown copy of every page under `/raw/<path>.md`.
+
+The source also holds an MCP server (`server/mcp`) with two tools, `list-pages` and `get-page`. It only runs with a server runtime (`npm run dev`, or `npm run build` with a server preset): the deployed site is static and has no `/mcp` endpoint. To give an assistant the docs over MCP, use GitMCP or Context7 as the [Use with AI](https://laravel-osdd.lomkit.com/integrations/laravel-boost) page explains.

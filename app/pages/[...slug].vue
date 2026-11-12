@@ -33,6 +33,39 @@ useSeoMeta({
 
 const headline = computed(() => findPageHeadline(navigation?.value, page.value?.path))
 
+const site = useSiteConfig()
+const pageUrl = `${site.url}${page.value.path}`
+const section = navigation?.value?.find(item => page.value?.path.startsWith(`${item.path}/`))
+const sectionPage = section?.children?.[0]?.path
+const breadcrumb: { name: string, item?: string }[] = [
+  { name: 'Laravel OSDD', item: site.url },
+  ...(section && sectionPage && sectionPage !== page.value.path ? [{ name: section.title, item: `${site.url}${sectionPage}` }] : []),
+  { name: page.value.title }
+]
+
+useHead({
+  link: [
+    { rel: 'alternate', type: 'text/markdown', href: `/raw${page.value.path}.md` }
+  ],
+  script: [jsonLdScript([
+    {
+      '@type': 'TechArticle',
+      '@id': `${pageUrl}#article`,
+      'headline': title,
+      description,
+      'url': pageUrl,
+      'inLanguage': 'en',
+      ...(page.value.sitemap?.lastmod ? { dateModified: String(page.value.sitemap.lastmod) } : {}),
+      'isPartOf': webSiteNode(site.url),
+      'about': softwareNode(site.url)
+    },
+    {
+      '@type': 'BreadcrumbList',
+      'itemListElement': breadcrumb.map((crumb, index) => ({ '@type': 'ListItem', 'position': index + 1, ...crumb }))
+    }
+  ])]
+})
+
 defineOgImageComponent('DocsSatori', {
   title,
   description,

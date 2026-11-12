@@ -28,6 +28,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          # Full history: the sitemap lastmod of each page is the date of its last commit
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v7
